@@ -33,11 +33,12 @@ WidgetModelFactory getTodoListScreenWidgetModelFactory() => (BuildContext contex
       ),
     );
 
-class TodoListScreenWidgetModel extends WidgetModel<TodoListScreenWidget, TodoListScreenModel> implements ITodoListScreenWidgetModel {
+class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScreenModel> implements ITodoListScreenWidgetModel {
   TodoListScreenWidgetModel(super.model);
 
   final _todoList = EntityStateNotifier<List<TaskEntity>>(EntityState.loading());
   final _newTaskState = StateNotifier<CreateTaskDTO?>();
+  late final tabController = context.read<TabController>();
 
   @override
   ValueListenable<EntityState<List<TaskEntity>>> get todoListenable => _todoList;
@@ -45,6 +46,7 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreenWidget, TodoLi
   @override
   StateNotifier<CreateTaskDTO?> get newTaskState => _newTaskState;
 
+  BaseTodoState? lastTodoState;
   StreamSubscription<BaseTodoState>? _todoListSubscription;
   StreamSubscription<BaseTaskCreatingState>? _taskCreatingSubscription;
 
@@ -52,22 +54,20 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreenWidget, TodoLi
   void initWidgetModel() {
     _todoListSubscription = model.todoListStateStream.listen(onTodoListState);
     _taskCreatingSubscription = model.taskCreatingStateStream.listen(onTaskCreatingState);
+    tabController.addListener(onTabChanged);
     super.initWidgetModel();
   }
 
-  @override
-  void dispose() {
-    _todoListSubscription?.cancel();
-    _taskCreatingSubscription?.cancel();
-    _todoList.dispose();
-    super.dispose();
-  }
+  void onTabChanged() => onTodoListState();
 
-  void onTodoListState(BaseTodoState state) {
+  void onTodoListState([BaseTodoState? state]) {
+    lastTodoState = state;
     if (state is LoadingTodoState) {
       _todoList.loading();
     } else if (state is ContentTodoState) {
-      _todoList.content(state.tasks);
+      final status = TaskStatus.values[tabController.index];
+      final filteredTodoList = state.tasks.where((task) => task.status == status).toList();
+      _todoList.content(filteredTodoList);
     } else if (state is ErrorTodoState) {
       _todoList.error(state.error);
     }
@@ -107,5 +107,14 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreenWidget, TodoLi
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    tabController.removeListener(onTabChanged);
+    _todoListSubscription?.cancel();
+    _taskCreatingSubscription?.cancel();
+    _todoList.dispose();
+    super.dispose();
   }
 }

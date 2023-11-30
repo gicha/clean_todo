@@ -6,8 +6,6 @@ abstract class BaseTodoState extends Equatable {
   List<Object> get props => [];
 }
 
-abstract class IEditingTaskAvailable {}
-
 abstract class ILoadAvailable {}
 
 class LoadingTodoState extends BaseTodoState {}
@@ -18,7 +16,7 @@ class ErrorTodoState extends BaseTodoState implements ILoadAvailable {
   final String error;
 }
 
-class ContentTodoState extends BaseTodoState implements ILoadAvailable, IEditingTaskAvailable {
+class ContentTodoState extends BaseTodoState {
   ContentTodoState(this.tasks);
 
   final List<TaskEntity> tasks;

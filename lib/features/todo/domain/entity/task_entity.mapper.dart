@@ -67,8 +67,8 @@ class TaskEntityMapper extends ClassMapperBase<TaskEntity> {
   @override
   final String id = 'TaskEntity';
 
-  static String _$id(TaskEntity v) => v.id;
-  static const Field<TaskEntity, String> _f$id = Field('id', _$id);
+  static int _$id(TaskEntity v) => v.id;
+  static const Field<TaskEntity, int> _f$id = Field('id', _$id);
   static String _$title(TaskEntity v) => v.title;
   static const Field<TaskEntity, String> _f$title = Field('title', _$title);
   static String _$description(TaskEntity v) => v.description;
@@ -147,7 +147,7 @@ extension TaskEntityValueCopy<$R, $Out>
 
 abstract class TaskEntityCopyWith<$R, $In extends TaskEntity, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? title, String? description, TaskStatus? status});
+  $R call({int? id, String? title, String? description, TaskStatus? status});
   TaskEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -160,11 +160,7 @@ class _TaskEntityCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TaskEntity> $mapper =
       TaskEntityMapper.ensureInitialized();
   @override
-  $R call(
-          {String? id,
-          String? title,
-          String? description,
-          TaskStatus? status}) =>
+  $R call({int? id, String? title, String? description, TaskStatus? status}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (title != null) #title: title,

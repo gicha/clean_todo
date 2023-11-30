@@ -2,6 +2,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'task_entity.mapper.dart';
 
+typedef Id = int;
+
 @MappableEnum()
 enum TaskStatus {
   active,
@@ -17,7 +19,7 @@ class TaskEntity with TaskEntityMappable {
     required this.status,
   });
 
-  final String id;
+  final Id id;
   final String title;
   final String description;
   final TaskStatus status;

@@ -1,10 +1,13 @@
+import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
-class TodoListWidget extends StatelessWidget {
-  const TodoListWidget({super.key});
+import 'todo_list_screen_widget_model.dart';
+
+class TodoListScreenWidget extends ElementaryWidget<TodoListScreenWidgetModel> {
+  TodoListScreenWidget({super.key}) : super(getTodoListScreenWidgetModelFactory());
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(ITodoListScreenWidgetModel wm) {
     return Container();
   }
 }

@@ -8,7 +8,7 @@ import '../../../domain/bloc/task_creating/task_creating_event.dart';
 import '../../../domain/bloc/task_creating/task_creating_state.dart';
 import '../../../domain/bloc/todo_list/todo_list_event.dart';
 
-abstract class ITodoListModel {
+abstract class ITodoListScreenModel {
   void fetchTodoList();
   void addTask({
     required String title,
@@ -19,11 +19,10 @@ abstract class ITodoListModel {
   Stream<BaseTaskCreatingState> get taskCreatingStateStream;
 }
 
-class TodoListModel extends ElementaryModel implements ITodoListModel {
-  TodoListModel({
+class TodoListScreenModel extends ElementaryModel implements ITodoListScreenModel {
+  TodoListScreenModel({
     required TodoListBloc todoBloc,
     required TaskCreatingBloc taskCreatingBloc,
-    super.errorHandler,
   })  : _todoBloc = todoBloc,
         _taskCreatingBloc = taskCreatingBloc;
 

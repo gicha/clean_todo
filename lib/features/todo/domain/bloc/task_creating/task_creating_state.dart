@@ -23,5 +23,5 @@ class CreatingTaskState extends BaseTaskCreatingState {
 class ErrorTaskCreatingState extends CreatingTaskState implements ITaskCreatingAvailable {
   const ErrorTaskCreatingState(super.createTaskDTO, this.error);
 
-  final String error;
+  final Exception error;
 }

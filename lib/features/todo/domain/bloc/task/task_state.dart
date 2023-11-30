@@ -27,7 +27,7 @@ class ContentTaskState extends BaseTaskState implements IEditingTaskAvailable, I
 class ErrorTaskState extends ContentTaskState {
   const ErrorTaskState(super.task, this.error);
 
-  final String error;
+  final Exception error;
 
   @override
   List<Object> get props => [task, error];

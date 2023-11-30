@@ -32,8 +32,8 @@ class TaskCreatingBloc extends Bloc<BaseTaskCreatingEvent, BaseTaskCreatingState
       final newTask = await _todoRepository.addTask(event.createTaskDTO);
       _onTaskCreated(newTask);
       emit(const ReadyToCreateTaskState());
-    } catch (e) {
-      emit(ErrorTaskCreatingState(event.createTaskDTO, e.toString()));
+    } on Exception catch (e) {
+      emit(ErrorTaskCreatingState(event.createTaskDTO, e));
     }
   }
 }

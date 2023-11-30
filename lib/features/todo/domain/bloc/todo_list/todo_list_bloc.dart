@@ -39,8 +39,8 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
     try {
       final tasks = await _todoRepository.getTasks();
       emit(ContentTodoState(tasks));
-    } catch (e) {
-      emit(ErrorTodoState(e.toString()));
+    } on Exception catch (e) {
+      emit(ErrorTodoState(e));
     }
   }
 

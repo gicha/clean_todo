@@ -13,7 +13,7 @@ class LoadingTodoState extends BaseTodoState {}
 class ErrorTodoState extends BaseTodoState implements ILoadAvailable {
   ErrorTodoState(this.error);
 
-  final String error;
+  final Exception error;
 }
 
 class ContentTodoState extends BaseTodoState {

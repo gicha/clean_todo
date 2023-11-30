@@ -30,8 +30,8 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
       emit(EditingLoadingTaskState(savedTask));
       final updatedTask = await _todoRepository.updateTask(event.updateTaskDTO);
       emit(ContentTaskState(updatedTask));
-    } catch (e) {
-      emit(ErrorTaskState(savedTask, e.toString()));
+    } on Exception catch (e) {
+      emit(ErrorTaskState(savedTask, e));
     }
   }
 
@@ -46,8 +46,8 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
       await _todoRepository.completeTask(event.taskId);
       final completedTask = savedTask.copyWith(status: TaskStatus.completed);
       emit(ContentTaskState(completedTask));
-    } catch (e) {
-      emit(ErrorTaskState(savedTask, e.toString()));
+    } on Exception catch (e) {
+      emit(ErrorTaskState(savedTask, e));
     }
   }
 
@@ -62,8 +62,8 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
       await _todoRepository.revertTask(event.taskId);
       final revertedTask = savedTask.copyWith(status: TaskStatus.active);
       emit(ContentTaskState(revertedTask));
-    } catch (e) {
-      emit(ErrorTaskState(savedTask, e.toString()));
+    } on Exception catch (e) {
+      emit(ErrorTaskState(savedTask, e));
     }
   }
 }

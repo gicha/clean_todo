@@ -10,6 +10,8 @@ abstract class BaseTaskState extends Equatable {
 
 abstract class IEditingTaskAvailable {}
 
+abstract class IDeletingTaskAvailable {}
+
 abstract class IStatusChangingTaskAvailable {}
 
 class EditingLoadingTaskState extends BaseTaskState {
@@ -20,7 +22,7 @@ class NewStatusLoadingTaskState extends BaseTaskState {
   const NewStatusLoadingTaskState(super.task);
 }
 
-class ContentTaskState extends BaseTaskState implements IEditingTaskAvailable, IStatusChangingTaskAvailable {
+class ContentTaskState extends BaseTaskState implements IEditingTaskAvailable, IDeletingTaskAvailable, IStatusChangingTaskAvailable {
   const ContentTaskState(super.task);
 }
 

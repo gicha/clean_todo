@@ -18,6 +18,15 @@ class UpdateTaskTaskEvent extends BaseTaskEvent {
   List<Object?> get props => [updateTaskDTO];
 }
 
+class DeleteTaskTaskEvent extends BaseTaskEvent {
+  const DeleteTaskTaskEvent(this.taskId);
+
+  final Id taskId;
+
+  @override
+  List<Object?> get props => [taskId];
+}
+
 class CompleteTaskTaskEvent extends BaseTaskEvent {
   const CompleteTaskTaskEvent(this.taskId);
 

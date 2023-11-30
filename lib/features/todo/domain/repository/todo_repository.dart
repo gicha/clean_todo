@@ -8,6 +8,7 @@ abstract class TodoRepository {
   Future<List<TaskEntity>> getTasks();
   Future<TaskEntity> addTask(CreateTaskDTO createTaskDTO);
   Future<TaskEntity> updateTask(UpdateTaskDTO updateTaskDTO);
+  Future<void> deleteTask(Id id);
   Future<void> completeTask(Id id);
   Future<void> revertTask(Id id);
 }

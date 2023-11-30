@@ -56,4 +56,9 @@ class TodoRepositoryImpl extends TodoRepository {
     final updatedTask = await _todoLDS.updateTask(newTask);
     return updatedTask.entity;
   }
+
+  @override
+  Future<void> deleteTask(Id id) {
+    return _todoLDS.deleteTask(id);
+  }
 }

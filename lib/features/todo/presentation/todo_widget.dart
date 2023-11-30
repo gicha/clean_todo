@@ -8,7 +8,7 @@ class TodoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TodoDependenciesWidget(
-      builder: (context) => TodoListScreenWidget(),
+      builder: (context) => const TodoListScreenWidget(),
     );
   }
 }

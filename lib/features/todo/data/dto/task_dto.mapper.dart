@@ -20,8 +20,8 @@ class TaskDTOMapper extends ClassMapperBase<TaskDTO> {
   @override
   final String id = 'TaskDTO';
 
-  static String _$id(TaskDTO v) => v.id;
-  static const Field<TaskDTO, String> _f$id = Field('id', _$id);
+  static int _$id(TaskDTO v) => v.id;
+  static const Field<TaskDTO, int> _f$id = Field('id', _$id);
   static String _$title(TaskDTO v) => v.title;
   static const Field<TaskDTO, String> _f$title = Field('title', _$title);
   static String _$description(TaskDTO v) => v.description;
@@ -97,7 +97,7 @@ extension TaskDTOValueCopy<$R, $Out> on ObjectCopyWith<$R, TaskDTO, $Out> {
 
 abstract class TaskDTOCopyWith<$R, $In extends TaskDTO, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? title, String? description, bool? active});
+  $R call({int? id, String? title, String? description, bool? active});
   TaskDTOCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -110,7 +110,7 @@ class _TaskDTOCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TaskDTO> $mapper =
       TaskDTOMapper.ensureInitialized();
   @override
-  $R call({String? id, String? title, String? description, bool? active}) =>
+  $R call({int? id, String? title, String? description, bool? active}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (title != null) #title: title,

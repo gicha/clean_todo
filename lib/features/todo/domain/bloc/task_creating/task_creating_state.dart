@@ -10,7 +10,9 @@ abstract class BaseTaskCreatingState extends Equatable {
 
 abstract class ITaskCreatingAvailable {}
 
-class ReadyToCreateTaskState extends BaseTaskCreatingState implements ITaskCreatingAvailable {}
+class ReadyToCreateTaskState extends BaseTaskCreatingState implements ITaskCreatingAvailable {
+  const ReadyToCreateTaskState();
+}
 
 class CreatingTaskState extends BaseTaskCreatingState {
   const CreatingTaskState(this.createTaskDTO);

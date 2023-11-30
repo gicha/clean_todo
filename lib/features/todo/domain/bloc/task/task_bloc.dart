@@ -24,7 +24,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     UpdateTaskTaskEvent event,
     Emitter<BaseTaskState> emit,
   ) async {
-    assert(state is IEditingTaskAvailable, "State must be IEditingTaskAvailable");
+    assert(state is IEditingTaskAvailable, 'State must be IEditingTaskAvailable');
     final savedTask = state.task;
     try {
       emit(EditingLoadingTaskState(savedTask));
@@ -39,7 +39,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     CompleteTaskTaskEvent event,
     Emitter<BaseTaskState> emit,
   ) async {
-    assert(state is IStatusChangingTaskAvailable, "State must be IStatusChangingTaskAvailable");
+    assert(state is IStatusChangingTaskAvailable, 'State must be IStatusChangingTaskAvailable');
     final savedTask = state.task;
     emit(NewStatusLoadingTaskState(state.task));
     try {
@@ -55,7 +55,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     RevertTaskTaskEvent event,
     Emitter<BaseTaskState> emit,
   ) async {
-    assert(state is IStatusChangingTaskAvailable, "State must be IStatusChangingTaskAvailable");
+    assert(state is IStatusChangingTaskAvailable, 'State must be IStatusChangingTaskAvailable');
     final savedTask = state.task;
     emit(NewStatusLoadingTaskState(state.task));
     try {

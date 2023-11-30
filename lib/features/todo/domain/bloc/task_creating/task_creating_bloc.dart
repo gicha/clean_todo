@@ -15,7 +15,7 @@ class TaskCreatingBloc extends Bloc<BaseTaskCreatingEvent, BaseTaskCreatingState
     required TaskCreatedCallback onTaskCreated,
   })  : _todoRepository = todoRepository,
         _onTaskCreated = onTaskCreated,
-        super(ReadyToCreateTaskState()) {
+        super(const ReadyToCreateTaskState()) {
     on<CreateTaskEvent>(_createTask);
   }
 
@@ -26,12 +26,12 @@ class TaskCreatingBloc extends Bloc<BaseTaskCreatingEvent, BaseTaskCreatingState
     CreateTaskEvent event,
     Emitter<BaseTaskCreatingState> emit,
   ) async {
-    assert(state is ITaskCreatingAvailable, "State must be ITaskCreatingAvailable");
+    assert(state is ITaskCreatingAvailable, 'State must be ITaskCreatingAvailable');
     emit(CreatingTaskState(event.createTaskDTO));
     try {
       final newTask = await _todoRepository.addTask(event.createTaskDTO);
       _onTaskCreated(newTask);
-      emit(ReadyToCreateTaskState());
+      emit(const ReadyToCreateTaskState());
     } catch (e) {
       emit(ErrorTaskCreatingState(event.createTaskDTO, e.toString()));
     }

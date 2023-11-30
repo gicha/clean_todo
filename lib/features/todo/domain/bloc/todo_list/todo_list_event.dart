@@ -8,3 +8,5 @@ abstract class BaseTodoListEvent extends Equatable {
 }
 
 class LoadTodoListEvent extends BaseTodoListEvent {}
+
+class NewTaskListEvent extends BaseTodoListEvent {}

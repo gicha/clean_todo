@@ -11,7 +11,7 @@ class TaskDTO with TaskDTOMappable {
     required this.active,
   });
 
-  final String id;
+  final int id;
   final String title;
   final String description;
   final bool active;

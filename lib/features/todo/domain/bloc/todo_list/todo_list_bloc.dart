@@ -1,48 +1,24 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
+import '../../entity/task_entity.dart';
 import '../../repository/todo_repository.dart';
 import 'todo_list_event.dart';
 import 'todo_list_state.dart';
 
-class _TaskCreatedListEvent extends BaseTodoListEvent {
-  const _TaskCreatedListEvent(this.task);
-
-  final TaskEntity task;
-
-  @override
-  List<Object?> get props => [task];
-}
-
-class _TaskDeletedListEvent extends BaseTodoListEvent {
-  const _TaskDeletedListEvent(this.taskId);
-
-  final Id taskId;
-
-  @override
-  List<Object?> get props => [taskId];
-}
+typedef TaskActionCallback = void Function(TaskEntity task);
 
 class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
   TodoListBloc({required TodoRepository todoRepository})
       : _todoRepository = todoRepository,
         super(LoadingTodoState()) {
     on<LoadTodoListEvent>(_loadTodoList);
-    on<_TaskCreatedListEvent>(_taskCreated);
-    on<_TaskDeletedListEvent>(_taskDeleted);
+    on<TaskCreatedListEvent>(_taskCreated);
+    on<TaskDeletedListEvent>(_taskDeleted);
   }
 
   final TodoRepository _todoRepository;
-
-  void taskCreated(TaskEntity task) {
-    add(_TaskCreatedListEvent(task));
-  }
-
-  void taskDeleted(Id taskId) {
-    add(_TaskDeletedListEvent(taskId));
-  }
 
   FutureOr<void> _loadTodoList(
     LoadTodoListEvent event,
@@ -59,7 +35,7 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
   }
 
   FutureOr<void> _taskCreated(
-    _TaskCreatedListEvent event,
+    TaskCreatedListEvent event,
     Emitter<BaseTodoState> emit,
   ) async {
     if (state is! ContentTodoState) return;
@@ -69,7 +45,7 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
   }
 
   FutureOr<void> _taskDeleted(
-    _TaskDeletedListEvent event,
+    TaskDeletedListEvent event,
     Emitter<BaseTodoState> emit,
   ) async {
     if (state is! ContentTodoState) return;

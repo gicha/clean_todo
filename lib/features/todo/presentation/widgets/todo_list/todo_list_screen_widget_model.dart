@@ -5,6 +5,7 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/features/todo/domain/bloc/todo_list/todo_list_event.dart';
 
 import '../../../domain/bloc/task/task_bloc.dart';
 import '../../../domain/bloc/task_creating/task_creating_bloc.dart';
@@ -102,7 +103,7 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
           create: (context) => TaskBloc(
             task: task,
             todoRepository: context.read<TodoRepository>(),
-            onTaskDelete: context.read<TodoListBloc>().taskDeleted,
+            onTaskDelete: (task) => context.read<TodoListBloc>().add(TaskDeletedListEvent(task)),
           ),
           child: const TaskWidget(),
         ),

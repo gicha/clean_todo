@@ -28,3 +28,12 @@ class TaskDeletedListEvent extends BaseTodoListEvent {
   @override
   List<Object?> get props => [taskId];
 }
+
+class TaskUpdatedListEvent extends BaseTodoListEvent {
+  const TaskUpdatedListEvent(this.task);
+
+  final TaskEntity task;
+
+  @override
+  List<Object?> get props => [task];
+}

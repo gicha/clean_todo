@@ -8,6 +8,7 @@ import 'todo_list_event.dart';
 import 'todo_list_state.dart';
 
 typedef TaskActionCallback = void Function(TaskEntity task);
+typedef TaskDeleteCallback = void Function(Id taskId);
 
 class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
   TodoListBloc({required TodoRepository todoRepository})
@@ -16,6 +17,7 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
     on<LoadTodoListEvent>(_loadTodoList);
     on<TaskCreatedListEvent>(_taskCreated);
     on<TaskDeletedListEvent>(_taskDeleted);
+    on<TaskUpdatedListEvent>(_taskUpdated);
   }
 
   final TodoRepository _todoRepository;
@@ -51,6 +53,22 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
     if (state is! ContentTodoState) return;
     final tasks = (state as ContentTodoState).tasks;
     final updatedTasks = tasks.where((task) => task.id != event.taskId).toList();
+    emit(ContentTodoState(updatedTasks));
+  }
+
+  Future<void> _taskUpdated(
+    TaskUpdatedListEvent event,
+    Emitter<BaseTodoState> emit,
+  ) async {
+    if (state is! ContentTodoState) return;
+    final tasks = (state as ContentTodoState).tasks;
+    final updatedTasks = tasks.map((task) {
+      if (task.id == event.task.id) {
+        return event.task;
+      } else {
+        return task;
+      }
+    }).toList();
     emit(ContentTodoState(updatedTasks));
   }
 }

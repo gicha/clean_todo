@@ -104,6 +104,7 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
             task: task,
             todoRepository: context.read<TodoRepository>(),
             onTaskDelete: (task) => context.read<TodoListBloc>().add(TaskDeletedListEvent(task)),
+            onTaskUpdate: (task) => context.read<TodoListBloc>().add(TaskUpdatedListEvent(task)),
           ),
           child: const TaskWidget(),
         ),

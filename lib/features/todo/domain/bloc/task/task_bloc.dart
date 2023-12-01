@@ -4,18 +4,19 @@ import 'package:bloc/bloc.dart';
 import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
 import '../../repository/todo_repository.dart';
+import '../todo_list/todo_list_bloc.dart';
 import 'task_event.dart';
 import 'task_state.dart';
-
-typedef TaskDeleteCallback = void Function(Id taskId);
 
 class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   TaskBloc({
     required TaskEntity task,
     required TodoRepository todoRepository,
     required TaskDeleteCallback onTaskDelete,
+    required TaskActionCallback onTaskUpdate,
   })  : _todoRepository = todoRepository,
         _onTaskDelete = onTaskDelete,
+        _onTaskUpdate = onTaskUpdate,
         super(ContentTaskState(task)) {
     on<UpdateTaskTaskEvent>(_updateTask);
     on<CompleteTaskTaskEvent>(_completeTask);
@@ -25,6 +26,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
 
   final TodoRepository _todoRepository;
   final TaskDeleteCallback _onTaskDelete;
+  final TaskActionCallback _onTaskUpdate;
 
   FutureOr<void> _updateTask(
     UpdateTaskTaskEvent event,
@@ -35,6 +37,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     try {
       emit(EditingLoadingTaskState(savedTask));
       final updatedTask = await _todoRepository.updateTask(event.updateTaskDTO);
+      _onTaskUpdate(updatedTask);
       emit(ContentTaskState(updatedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
@@ -65,6 +68,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     try {
       await _todoRepository.completeTask(event.taskId);
       final completedTask = savedTask.copyWith(status: TaskStatus.completed);
+      _onTaskUpdate(completedTask);
       emit(ContentTaskState(completedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
@@ -81,6 +85,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     try {
       await _todoRepository.revertTask(event.taskId);
       final revertedTask = savedTask.copyWith(status: TaskStatus.active);
+      _onTaskUpdate(revertedTask);
       emit(ContentTaskState(revertedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));

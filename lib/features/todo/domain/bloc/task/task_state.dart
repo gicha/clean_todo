@@ -14,8 +14,8 @@ abstract class IDeletingTaskAvailable {}
 
 abstract class IStatusChangingTaskAvailable {}
 
-class EditingLoadingTaskState extends BaseTaskState {
-  const EditingLoadingTaskState(super.task);
+class UpdateLoadingTaskState extends BaseTaskState {
+  const UpdateLoadingTaskState(super.task);
 }
 
 class NewStatusLoadingTaskState extends BaseTaskState {

@@ -31,11 +31,11 @@ abstract class ITaskWidgetModel {
   void onRevertTap();
 }
 
-WidgetModelFactory getTaskWidgetModelFactory() => (BuildContext context) => TaskWidgetModel(
+WidgetModelFactory getTaskWidgetModelFactory({TaskEntity? task}) => (BuildContext context) => TaskWidgetModel(
       TaskModel(taskBloc: context.read<TaskBloc>()),
     );
 
-class TaskWidgetModel extends WidgetModel<Task, TaskModel> implements ITaskWidgetModel {
+class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITaskWidgetModel {
   TaskWidgetModel(super.model);
 
   final _taskEditingStatus = EntityStateNotifier<TaskEditingStatus>(EntityState.content(TaskEditingStatus.none));

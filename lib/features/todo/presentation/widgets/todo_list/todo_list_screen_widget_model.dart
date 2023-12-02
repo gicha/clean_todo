@@ -5,17 +5,13 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/features/todo/domain/bloc/todo_list/todo_list_event.dart';
 
-import '../../../domain/bloc/task/task_bloc.dart';
 import '../../../domain/bloc/task_creating/task_creating_bloc.dart';
 import '../../../domain/bloc/task_creating/task_creating_state.dart';
 import '../../../domain/bloc/todo_list/todo_list_bloc.dart';
 import '../../../domain/bloc/todo_list/todo_list_state.dart';
 import '../../../domain/dto/create_task_dto.dart';
 import '../../../domain/entity/task_entity.dart';
-import '../../../domain/repository/todo_repository.dart';
-import '../task/task_widget.dart';
 import 'todo_list_screen.dart';
 import 'todo_list_screen_model.dart';
 
@@ -24,7 +20,6 @@ abstract class ITodoListScreenWidgetModel {
   StateNotifier<CreateTaskDTO?> get newTaskState;
 
   void onAddTaskTap();
-  void onTaskTap(TaskEntity task);
 }
 
 WidgetModelFactory getTodoListScreenWidgetModelFactory() => (BuildContext context) => TodoListScreenWidgetModel(
@@ -92,23 +87,6 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
     model.addTask(
       title: title,
       description: description,
-    );
-  }
-
-  @override
-  void onTaskTap(TaskEntity task) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => TaskBloc(
-            task: task,
-            todoRepository: context.read<TodoRepository>(),
-            onTaskDelete: (task) => context.read<TodoListBloc>().add(TaskDeletedListEvent(task)),
-            onTaskUpdate: (task) => context.read<TodoListBloc>().add(TaskUpdatedListEvent(task)),
-          ),
-          child: const TaskWidget(),
-        ),
-      ),
     );
   }
 

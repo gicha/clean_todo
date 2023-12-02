@@ -19,10 +19,16 @@ class CreatingTaskState extends BaseTaskCreatingState {
   const CreatingTaskState(this.createTaskDTO);
 
   final CreateTaskDTO createTaskDTO;
+
+  @override
+  List<Object> get props => [createTaskDTO];
 }
 
 class ErrorTaskCreatingState extends CreatingTaskState implements ITaskCreatingAvailable {
   const ErrorTaskCreatingState(super.createTaskDTO, this.error);
 
   final Exception error;
+
+  @override
+  List<Object> get props => [createTaskDTO, error];
 }

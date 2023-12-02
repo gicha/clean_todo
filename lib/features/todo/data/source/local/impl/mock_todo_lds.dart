@@ -1,5 +1,4 @@
-import 'package:todo/features/todo/data/dto/task_dto.dart';
-
+import '../../../dto/task_dto.dart';
 import '../todo_lds.dart';
 
 class MockTodoLDS extends TodoLDS {
@@ -35,27 +34,32 @@ class MockTodoLDS extends TodoLDS {
       description: description,
       active: true,
     );
+    await Future.delayed(const Duration(seconds: 1));
     _todo.add(newTask);
     return newTask;
   }
 
   @override
   Future<void> deleteTask(int id) async {
+    await Future.delayed(const Duration(seconds: 1));
     _todo.removeWhere((task) => task.id == id);
   }
 
   @override
   Future<TaskDTO> getTaskById(int id) async {
+    await Future.delayed(const Duration(seconds: 1));
     return _todo.firstWhere((task) => task.id == id);
   }
 
   @override
   Future<List<TaskDTO>> getTasks() async {
+    await Future.delayed(const Duration(seconds: 1));
     return _todo;
   }
 
   @override
   Future<TaskDTO> updateTask(TaskDTO taskDTO) async {
+    await Future.delayed(const Duration(seconds: 1));
     final task = _todo.firstWhere((task) => task.id == taskDTO.id);
     return task.copyWith(
       title: taskDTO.title,

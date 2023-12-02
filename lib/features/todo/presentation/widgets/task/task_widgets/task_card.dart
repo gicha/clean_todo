@@ -18,7 +18,18 @@ class TaskCard extends StatelessWidget {
   void onCardTap(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => TaskScreen(),
+        builder: (context) => BlocProvider(
+          key: ValueKey(task.id),
+          create: (context) => TaskBloc(
+            task: task,
+            todoRepository: context.read<TodoRepository>(),
+            onTaskDelete: (task) => context.read<TodoListBloc>().add(TaskDeletedListEvent(task)),
+            onTaskUpdate: (task) => context.read<TodoListBloc>().add(TaskUpdatedListEvent(task)),
+          ),
+          child: Builder(
+            builder: (context) => TaskScreen(),
+          ),
+        ),
       ),
     );
   }

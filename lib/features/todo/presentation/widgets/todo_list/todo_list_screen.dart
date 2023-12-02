@@ -34,9 +34,23 @@ class TodoListScreen extends ElementaryWidget<TodoListScreenWidgetModel> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: wm.onAddTaskTap,
-        child: const Icon(Icons.add),
+      floatingActionButton: StateNotifierBuilder(
+        listenableState: wm.newTaskState,
+        builder: (context, state) {
+          if (state == null) {
+            return FloatingActionButton(
+              onPressed: wm.onAddTaskTap,
+              child: const Icon(Icons.add),
+            );
+          }
+          return const FloatingActionButton(
+            onPressed: null,
+            child: SizedBox.square(
+              dimension: 24,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            ),
+          );
+        },
       ),
       body: EntityStateNotifierBuilder(
         listenableEntityState: wm.todoListenable,
@@ -49,22 +63,25 @@ class TodoListScreen extends ElementaryWidget<TodoListScreenWidgetModel> {
         builder: (context, state) {
           final todoLists = state ?? {};
           return TabBarView(
-            children: List.generate(todoLists.length, (index) {
-              final status = todoLists.keys.toList()[index];
-              final tasks = todoLists[status]!;
-              if (tasks.isEmpty) {
-                return const Center(
-                  child: Text('No tasks'),
+            children: List.generate(
+              todoLists.length,
+              (index) {
+                final status = todoLists.keys.toList()[index];
+                final tasks = todoLists[status]!;
+                if (tasks.isEmpty) {
+                  return const Center(
+                    child: Text('No tasks'),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    final task = tasks[index];
+                    return TaskCard(task);
+                  },
                 );
-              }
-              return ListView.builder(
-                itemCount: tasks.length,
-                itemBuilder: (context, index) {
-                  final task = tasks[index];
-                  return TaskCard(task);
-                },
-              );
-            }),
+              },
+            ),
           );
         },
       ),

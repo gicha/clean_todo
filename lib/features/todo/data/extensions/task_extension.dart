@@ -1,5 +1,5 @@
-import 'package:todo/features/todo/data/dto/task_dto.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
+import '../../domain/entity/task_entity.dart';
+import '../dto/task_dto.dart';
 
 extension TaskDTOExtension on TaskDTO {
   TaskEntity get entity => TaskEntity(

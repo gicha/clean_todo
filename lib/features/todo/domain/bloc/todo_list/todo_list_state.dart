@@ -15,10 +15,16 @@ class ErrorTodoState extends BaseTodoState implements ILoadAvailable {
   ErrorTodoState(this.error);
 
   final Exception error;
+
+  @override
+  List<Object> get props => [error];
 }
 
 class ContentTodoState extends BaseTodoState implements ILoadAvailable {
   ContentTodoState(this.tasks);
 
   final List<TaskEntity> tasks;
+
+  @override
+  List<Object> get props => [tasks];
 }

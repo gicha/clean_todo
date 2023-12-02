@@ -5,9 +5,9 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/features/todo/domain/bloc/task/task_state.dart';
 
 import '../../../domain/bloc/task/task_bloc.dart';
+import '../../../domain/bloc/task/task_state.dart';
 import '../../../domain/entity/task_entity.dart';
 import '../task/task_widget.dart';
 import 'task_model.dart';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
-import 'package:todo/features/todo/presentation/widgets/task/task_widget.dart';
 
 import '../../../../domain/bloc/task/task_bloc.dart';
 import '../../../../domain/bloc/todo_list/todo_list_bloc.dart';
 import '../../../../domain/bloc/todo_list/todo_list_event.dart';
+import '../../../../domain/entity/task_entity.dart';
 import '../../../../domain/repository/todo_repository.dart';
+import '../task_widget.dart';
 import '../task_widget_model.dart';
 import 'task_screen.dart';
 

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:todo/features/todo/domain/dto/create_task_dto.dart';
+
+import '../../dto/create_task_dto.dart';
 
 abstract class BaseTaskCreatingState extends Equatable {
   const BaseTaskCreatingState();

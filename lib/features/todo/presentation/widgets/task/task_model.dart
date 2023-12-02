@@ -1,10 +1,10 @@
 import 'package:elementary/elementary.dart';
-import 'package:todo/features/todo/domain/bloc/task/task_bloc.dart';
-import 'package:todo/features/todo/domain/bloc/task/task_state.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
+import '../../../domain/bloc/task/task_bloc.dart';
 import '../../../domain/bloc/task/task_event.dart';
+import '../../../domain/bloc/task/task_state.dart';
 import '../../../domain/dto/update_task_dto.dart';
+import '../../../domain/entity/task_entity.dart';
 
 abstract class ITaskModel {
   void updateTask({

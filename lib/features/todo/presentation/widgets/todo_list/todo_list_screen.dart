@@ -1,7 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
+import '../../../domain/entity/task_entity.dart';
 import 'todo_list_screen_widget_model.dart';
 
 class TodoListScreenWidget extends StatelessWidget {

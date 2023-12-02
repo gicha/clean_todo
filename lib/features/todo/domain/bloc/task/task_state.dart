@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
+
+import '../../entity/task_entity.dart';
 
 abstract class BaseTaskState extends Equatable {
   const BaseTaskState(this.task);

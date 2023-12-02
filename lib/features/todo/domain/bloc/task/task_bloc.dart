@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
+import '../../entity/task_entity.dart';
 import '../../repository/todo_repository.dart';
 import '../todo_list/todo_list_bloc.dart';
 import 'task_event.dart';

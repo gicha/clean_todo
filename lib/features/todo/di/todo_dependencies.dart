@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/features/todo/data/repository/todo_impl.dart';
-import 'package:todo/features/todo/data/source/local/impl/mock_todo_lds.dart';
-import 'package:todo/features/todo/domain/bloc/task_creating/task_creating_bloc.dart';
-import 'package:todo/features/todo/domain/bloc/todo_list/todo_list_bloc.dart';
-import 'package:todo/features/todo/domain/bloc/todo_list/todo_list_event.dart';
-import 'package:todo/features/todo/domain/repository/todo_repository.dart';
+
+import '../data/repository/todo_impl.dart';
+import '../data/source/local/impl/mock_todo_lds.dart';
+import '../domain/bloc/task_creating/task_creating_bloc.dart';
+import '../domain/bloc/todo_list/todo_list_bloc.dart';
+import '../domain/bloc/todo_list/todo_list_event.dart';
+import '../domain/repository/todo_repository.dart';
 
 class TodoDependenciesWidget extends StatelessWidget {
   const TodoDependenciesWidget({

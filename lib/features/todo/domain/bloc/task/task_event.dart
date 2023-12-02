@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:todo/features/todo/domain/dto/update_task_dto.dart';
-import 'package:todo/features/todo/domain/entity/task_entity.dart';
+
+import '../../dto/update_task_dto.dart';
+import '../../entity/task_entity.dart';
 
 abstract class BaseTaskEvent extends Equatable {
   const BaseTaskEvent();

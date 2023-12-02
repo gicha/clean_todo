@@ -5,6 +5,7 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/features/todo/presentation/dialogs/create_task_dialog.dart';
 
 import '../../../domain/bloc/task_creating/task_creating_bloc.dart';
 import '../../../domain/bloc/task_creating/task_creating_state.dart';
@@ -88,13 +89,17 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
   }
 
   @override
-  void onAddTaskTap() {
-    String title = 'title';
-    String description = 'description';
-    model.addTask(
-      title: title,
-      description: description,
+  Future<void> onAddTaskTap() async {
+    final createTaskDTO = await showDialog<CreateTaskDTO>(
+      context: context,
+      builder: (context) => const CreateTaskDialog(),
     );
+    if (createTaskDTO != null) {
+      model.addTask(
+        title: createTaskDTO.title,
+        description: createTaskDTO.description,
+      );
+    }
   }
 
   @override

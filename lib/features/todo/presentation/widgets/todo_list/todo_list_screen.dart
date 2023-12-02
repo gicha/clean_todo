@@ -76,7 +76,7 @@ class TodoListScreen extends ElementaryWidget<TodoListScreenWidgetModel> {
                 return ListView.builder(
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
-                    final task = tasks[index];
+                    final task = tasks[tasks.length - index - 1];
                     return TaskCard(task);
                   },
                 );

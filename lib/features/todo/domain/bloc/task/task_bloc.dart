@@ -34,8 +34,8 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   ) async {
     assert(state is IEditingTaskAvailable, 'State must be IEditingTaskAvailable');
     final savedTask = state.task;
+    emit(UpdateLoadingTaskState(savedTask));
     try {
-      emit(UpdateLoadingTaskState(savedTask));
       final updatedTask = await _todoRepository.updateTask(event.updateTaskDTO);
       _onTaskUpdate?.call(updatedTask);
       emit(ContentTaskState(updatedTask));
@@ -50,6 +50,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   ) async {
     assert(state is IDeletingTaskAvailable, 'State must be IDeletingTaskAvailable');
     final savedTask = state.task;
+    emit(DeletingLoadingTaskState(savedTask));
     try {
       await _todoRepository.deleteTask(event.taskId);
       _onTaskDelete?.call(event.taskId);
@@ -64,7 +65,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   ) async {
     assert(state is IStatusChangingTaskAvailable, 'State must be IStatusChangingTaskAvailable');
     final savedTask = state.task;
-    emit(NewStatusLoadingTaskState(state.task));
+    emit(NewStatusLoadingTaskState(savedTask));
     try {
       await _todoRepository.completeTask(event.taskId);
       final completedTask = savedTask.copyWith(status: TaskStatus.completed);

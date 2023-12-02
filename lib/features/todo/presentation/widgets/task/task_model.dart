@@ -21,9 +21,12 @@ abstract class ITaskModel {
 }
 
 class TaskModel extends ElementaryModel implements ITaskModel {
-  TaskModel({required TaskBloc taskBloc}) : _taskBloc = taskBloc;
+  TaskModel({required TaskBloc taskBloc})
+      : _taskBloc = taskBloc,
+        taskId = taskBloc.state.task.id;
 
   final TaskBloc _taskBloc;
+  final Id taskId;
 
   @override
   late final BaseTaskState initTaskState = _taskBloc.state;

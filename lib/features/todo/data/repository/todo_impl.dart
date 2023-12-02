@@ -20,13 +20,6 @@ class TodoRepositoryImpl extends TodoRepository {
   }
 
   @override
-  Future<void> completeTask(Id id) async {
-    final task = await _todoLDS.getTaskById(id);
-    assert(task.active, 'Task is already completed');
-    await _todoLDS.updateTask(task.copyWith(active: false));
-  }
-
-  @override
   Future<TaskEntity> getTaskById(Id id) async {
     final task = await _todoLDS.getTaskById(id);
     return task.entity;
@@ -39,10 +32,17 @@ class TodoRepositoryImpl extends TodoRepository {
   }
 
   @override
+  Future<void> completeTask(Id id) async {
+    final task = await _todoLDS.getTaskById(id);
+    assert(task.active, 'Task is already completed');
+    await _todoLDS.updateTask(task.copyWith(active: false));
+  }
+
+  @override
   Future<void> revertTask(Id id) async {
     final task = await _todoLDS.getTaskById(id);
     assert(!task.active, 'Task is already active');
-    await _todoLDS.updateTask(task.copyWith(active: false));
+    await _todoLDS.updateTask(task.copyWith(active: true));
   }
 
   @override

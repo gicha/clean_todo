@@ -23,6 +23,10 @@ class NewStatusLoadingTaskState extends BaseTaskState {
   const NewStatusLoadingTaskState(super.task);
 }
 
+class DeletingLoadingTaskState extends BaseTaskState {
+  const DeletingLoadingTaskState(super.task);
+}
+
 class ContentTaskState extends BaseTaskState implements IEditingTaskAvailable, IDeletingTaskAvailable, IStatusChangingTaskAvailable {
   const ContentTaskState(super.task);
 }

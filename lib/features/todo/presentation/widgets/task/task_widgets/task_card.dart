@@ -1,3 +1,4 @@
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,19 +17,12 @@ class TaskCard extends StatelessWidget {
   final TaskEntity task;
 
   void onCardTap(BuildContext context) {
+    final taskBloc = context.read<TaskBloc>();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BlocProvider(
-          key: ValueKey(task.id),
-          create: (context) => TaskBloc(
-            task: task,
-            todoRepository: context.read<TodoRepository>(),
-            onTaskDelete: (task) => context.read<TodoListBloc>().add(TaskDeletedListEvent(task)),
-            onTaskUpdate: (task) => context.read<TodoListBloc>().add(TaskUpdatedListEvent(task)),
-          ),
-          child: Builder(
-            builder: (context) => TaskScreen(),
-          ),
+          create: (context) => taskBloc,
+          child: TaskScreen(),
         ),
       ),
     );
@@ -64,6 +58,40 @@ class _TaskCard extends TaskWidget {
       onTap: onCardTap,
       title: Text(wm.title),
       subtitle: Text(wm.description),
+      leading: EntityStateNotifierBuilder(
+        listenableEntityState: wm.taskStatusListenable,
+        loadingBuilder: (context, _) => const SizedBox.square(
+          dimension: 48,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+            ),
+          ),
+        ),
+        builder: (context, status) => Checkbox(
+          value: status == TaskStatus.completed,
+          onChanged: (newStatus) {
+            if (newStatus == true) {
+              wm.onCompleteTap();
+            } else {
+              wm.onRevertTap();
+            }
+          },
+        ),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          StateNotifierBuilder(
+            listenableState: wm.deleteLoadingStatusNotifier,
+            builder: (context, isLoading) => IconButton(
+              onPressed: isLoading == true ? null : wm.onDeleteTap,
+              icon: const Icon(Icons.delete),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

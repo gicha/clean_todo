@@ -2,7 +2,7 @@ import '../../../dto/task_dto.dart';
 import '../todo_lds.dart';
 
 class MockTodoLDS extends TodoLDS {
-  final _todo = <TaskDTO>[
+  List<TaskDTO> _todo = <TaskDTO>[
     TaskDTO(
       id: 1,
       title: 'Mock Task 1',
@@ -60,11 +60,20 @@ class MockTodoLDS extends TodoLDS {
   @override
   Future<TaskDTO> updateTask(TaskDTO taskDTO) async {
     await Future.delayed(const Duration(seconds: 1));
-    final task = _todo.firstWhere((task) => task.id == taskDTO.id);
-    return task.copyWith(
-      title: taskDTO.title,
-      description: taskDTO.description,
-      active: taskDTO.active,
-    );
+    TaskDTO? updatedTask;
+    _todo = _todo.map((t) {
+      if (t.id == taskDTO.id) {
+        return updatedTask = t.copyWith(
+          title: taskDTO.title,
+          description: taskDTO.description,
+          active: taskDTO.active,
+        );
+      }
+      return t;
+    }).toList();
+    if (updatedTask == null) {
+      throw Exception('Task not found');
+    }
+    return updatedTask!;
   }
 }

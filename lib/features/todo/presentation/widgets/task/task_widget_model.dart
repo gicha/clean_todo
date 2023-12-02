@@ -32,6 +32,7 @@ abstract class ITaskWidgetModel {
   void onCancelTap();
   void onCompleteTap();
   void onRevertTap();
+  void onDeleteTap();
 }
 
 WidgetModelFactory getTaskWidgetModelFactory({TaskEntity? task}) => (BuildContext context) => TaskWidgetModel(
@@ -47,7 +48,6 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  late TaskEntity cachedTask;
   StreamSubscription<BaseTaskState>? _todoListSubscription;
 
   @override
@@ -71,6 +71,8 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   @override
   String get description => descriptionController.text;
 
+  Id get _taskId => model.taskId;
+
   @override
   void initWidgetModel() {
     _todoListSubscription = model.taskStateStream.listen(onTodoListState);
@@ -92,6 +94,8 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
       _taskEditingStatus.loading();
     } else if (state is NewStatusLoadingTaskState) {
       _taskStatus.loading();
+    } else if (state is DeletingLoadingTaskState) {
+      _deleteLoadingStatus.accept(true);
     } else if (state is ContentTaskState) {
       updateControllersByTask(state.task);
     } else if (state is ErrorTaskState) {
@@ -118,7 +122,7 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   void onEditingDoneTap() {
     // TODO: add validation
     model.updateTask(
-      id: cachedTask.id,
+      id: _taskId,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
     );
@@ -126,12 +130,17 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
 
   @override
   void onCompleteTap() {
-    model.completeTask(cachedTask.id);
+    model.completeTask(_taskId);
   }
 
   @override
   void onRevertTap() {
-    model.revertTask(cachedTask.id);
+    model.revertTask(_taskId);
+  }
+
+  @override
+  void onDeleteTap() {
+    model.deleteTask(_taskId);
   }
 
   @override

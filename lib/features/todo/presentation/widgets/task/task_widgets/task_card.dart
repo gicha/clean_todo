@@ -11,10 +11,7 @@ import '../task_widget_model.dart';
 import 'task_screen.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({
-    super.key,
-    required this.task,
-  });
+  const TaskCard(this.task, {super.key});
 
   final TaskEntity task;
 
@@ -29,6 +26,7 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      key: ValueKey(task.id),
       create: (context) => TaskBloc(
         task: task,
         todoRepository: context.read<TodoRepository>(),
@@ -51,6 +49,10 @@ class _TaskCard extends TaskWidget {
 
   @override
   Widget build(ITaskWidgetModel wm) {
-    return Container();
+    return ListTile(
+      onTap: onCardTap,
+      title: Text(wm.title),
+      subtitle: Text(wm.description),
+    );
   }
 }

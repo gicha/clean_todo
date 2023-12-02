@@ -24,6 +24,9 @@ abstract class ITaskWidgetModel {
   TextEditingController get titleController;
   TextEditingController get descriptionController;
 
+  String get title => titleController.text;
+  String get description => descriptionController.text;
+
   void onEditTap();
   void onEditingDoneTap();
   void onCancelTap();
@@ -63,9 +66,15 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   TextEditingController get descriptionController => _descriptionController;
 
   @override
+  String get title => titleController.text;
+
+  @override
+  String get description => descriptionController.text;
+
+  @override
   void initWidgetModel() {
     _todoListSubscription = model.taskStateStream.listen(onTodoListState);
-    model.taskStateStream.last.then(onTodoListState);
+    onTodoListState(model.initTaskState);
     super.initWidgetModel();
   }
 

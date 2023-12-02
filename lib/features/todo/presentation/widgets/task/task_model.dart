@@ -17,12 +17,16 @@ abstract class ITaskModel {
   void deleteTask(Id id);
 
   Stream<BaseTaskState> get taskStateStream;
+  BaseTaskState get initTaskState;
 }
 
 class TaskModel extends ElementaryModel implements ITaskModel {
   TaskModel({required TaskBloc taskBloc}) : _taskBloc = taskBloc;
 
   final TaskBloc _taskBloc;
+
+  @override
+  late final BaseTaskState initTaskState = _taskBloc.state;
 
   @override
   Stream<BaseTaskState> get taskStateStream => _taskBloc.stream.asBroadcastStream();

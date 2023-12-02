@@ -13,7 +13,7 @@ typedef TaskDeleteCallback = void Function(Id taskId);
 class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
   TodoListBloc({required TodoRepository todoRepository})
       : _todoRepository = todoRepository,
-        super(LoadingTodoState()) {
+        super(ContentTodoState(const [])) {
     on<LoadTodoListEvent>(_loadTodoList);
     on<TaskCreatedListEvent>(_taskCreated);
     on<TaskDeletedListEvent>(_taskDeleted);
@@ -22,10 +22,7 @@ class TodoListBloc extends Bloc<BaseTodoListEvent, BaseTodoState> {
 
   final TodoRepository _todoRepository;
 
-  FutureOr<void> _loadTodoList(
-    LoadTodoListEvent event,
-    Emitter<BaseTodoState> emit,
-  ) async {
+  FutureOr<void> _loadTodoList(LoadTodoListEvent event, Emitter<BaseTodoState> emit) async {
     assert(state is ILoadAvailable, 'State must be ILoadAvailable');
     emit(LoadingTodoState());
     try {

@@ -17,7 +17,7 @@ class ErrorTodoState extends BaseTodoState implements ILoadAvailable {
   final Exception error;
 }
 
-class ContentTodoState extends BaseTodoState {
+class ContentTodoState extends BaseTodoState implements ILoadAvailable {
   ContentTodoState(this.tasks);
 
   final List<TaskEntity> tasks;

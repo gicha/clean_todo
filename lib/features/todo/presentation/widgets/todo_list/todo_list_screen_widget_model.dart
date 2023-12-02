@@ -16,7 +16,7 @@ import 'todo_list_screen.dart';
 import 'todo_list_screen_model.dart';
 
 abstract class ITodoListScreenWidgetModel {
-  ValueListenable<EntityState<List<TaskEntity>>> get todoListenable;
+  ValueListenable<EntityState<Map<TaskStatus, List<TaskEntity>>>> get todoListenable;
   StateNotifier<CreateTaskDTO?> get newTaskState;
 
   void onAddTaskTap();
@@ -32,17 +32,15 @@ WidgetModelFactory getTodoListScreenWidgetModelFactory() => (BuildContext contex
 class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScreenModel> implements ITodoListScreenWidgetModel {
   TodoListScreenWidgetModel(super.model);
 
-  final _todoList = EntityStateNotifier<List<TaskEntity>>(EntityState.loading());
+  final _todoList = EntityStateNotifier<Map<TaskStatus, List<TaskEntity>>>(EntityState.loading());
   final _newTaskState = StateNotifier<CreateTaskDTO?>();
-  late final tabController = context.read<TabController>();
 
   @override
-  ValueListenable<EntityState<List<TaskEntity>>> get todoListenable => _todoList;
+  ValueListenable<EntityState<Map<TaskStatus, List<TaskEntity>>>> get todoListenable => _todoList;
 
   @override
   StateNotifier<CreateTaskDTO?> get newTaskState => _newTaskState;
 
-  BaseTodoState? lastTodoState;
   StreamSubscription<BaseTodoState>? _todoListSubscription;
   StreamSubscription<BaseTaskCreatingState>? _taskCreatingSubscription;
 
@@ -50,20 +48,29 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
   void initWidgetModel() {
     _todoListSubscription = model.todoListStateStream.listen(onTodoListState);
     _taskCreatingSubscription = model.taskCreatingStateStream.listen(onTaskCreatingState);
-    tabController.addListener(onTabChanged);
+    model.fetchTodoList();
     super.initWidgetModel();
   }
 
-  void onTabChanged() => onTodoListState();
-
   void onTodoListState([BaseTodoState? state]) {
-    lastTodoState = state;
     if (state is LoadingTodoState) {
       _todoList.loading();
     } else if (state is ContentTodoState) {
-      final status = TaskStatus.values[tabController.index];
-      final filteredTodoList = state.tasks.where((task) => task.status == status).toList();
-      _todoList.content(filteredTodoList);
+      final todoList = <TaskStatus, List<TaskEntity>>{
+        TaskStatus.active: [],
+        TaskStatus.completed: [],
+      };
+      for (final task in state.tasks) {
+        switch (task.status) {
+          case TaskStatus.active:
+            todoList[TaskStatus.active]!.add(task);
+            break;
+          case TaskStatus.completed:
+            todoList[TaskStatus.completed]!.add(task);
+            break;
+        }
+      }
+      _todoList.content(todoList);
     } else if (state is ErrorTodoState) {
       _todoList.error(state.error);
     }
@@ -92,7 +99,6 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
 
   @override
   void dispose() {
-    tabController.removeListener(onTabChanged);
     _todoListSubscription?.cancel();
     _taskCreatingSubscription?.cancel();
     _todoList.dispose();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'features/app/app.dart';
+import 'app/app.dart';
 
 void main() {
   runApp(const TodoApp());

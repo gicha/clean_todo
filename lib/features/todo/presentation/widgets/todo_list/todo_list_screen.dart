@@ -3,7 +3,7 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entity/task_entity.dart';
-import '../task/task_widgets/task_card.dart';
+import '../task/task_widgets/task_card/task_card.dart';
 import 'todo_list_screen_widget_model.dart';
 
 class TodoListScreenWidget extends StatelessWidget {

@@ -32,7 +32,7 @@ abstract class ITaskWidgetModel {
   void onCancelTap();
   void onCompleteTap();
   void onRevertTap();
-  void onDeleteTap();
+  void onDeleteTap({bool withPop = false});
 }
 
 WidgetModelFactory getTaskWidgetModelFactory({TaskEntity? task}) => (BuildContext context) => TaskWidgetModel(
@@ -98,6 +98,10 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
       _taskStatus.loading();
     } else if (state is DeletingLoadingTaskState) {
       _deleteLoadingStatus.accept(true);
+    } else if (state is DeletedTaskState) {
+      if (widget.needPopWhenDelete) {
+        Navigator.of(context).pop();
+      }
     } else if (state is ContentTaskState) {
       updateControllersByTask(state.task);
     } else if (state is ErrorTaskState) {
@@ -144,7 +148,7 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   }
 
   @override
-  void onDeleteTap() {
+  void onDeleteTap({bool withPop = false}) {
     model.deleteTask(_taskId);
   }
 

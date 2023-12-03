@@ -4,6 +4,11 @@ import 'package:todo/features/todo/domain/dto/create_task_dto.dart';
 class CreateTaskDialog extends StatefulWidget {
   const CreateTaskDialog({super.key});
 
+  static Future<CreateTaskDTO?> show(BuildContext context) => showDialog(
+        context: context,
+        builder: (context) => const CreateTaskDialog(),
+      );
+
   @override
   State<CreateTaskDialog> createState() => _CreateTaskDialogState();
 }
@@ -28,6 +33,13 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
         description: descriptionController.text.trim(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
 
   @override

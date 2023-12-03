@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import '../../../../../domain/entity/task_entity.dart';
 import '../../task_widget.dart';
 import '../../task_widget_model.dart';
-import 'widgets/task_appbar.dart';
+import 'appbar/task_appbar.dart';
 
 class TaskScreen extends TaskWidget {
   TaskScreen({super.key});
+
+  @override
+  bool get needPopWhenDelete => true;
 
   @override
   Widget build(ITaskWidgetModel wm) {
@@ -16,12 +19,19 @@ class TaskScreen extends TaskWidget {
       builder: (context, isDeleting) => IgnorePointer(
         ignoring: isDeleting == true,
         child: Scaffold(
-          appBar: TaskAppbar(
-            taskEditingStatusListenable: wm.taskEditingStatusListenable,
-            titleController: wm.titleController,
-            onEditTap: wm.onEditTap,
-            onEditingDoneTap: wm.onEditingDoneTap,
-            onCancelTap: wm.onCancelTap,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: ValueListenableBuilder(
+              valueListenable: wm.taskEditingStatusListenable,
+              builder: (context, status, _) => TaskAppbar(
+                editingStatus: status.data,
+                isLoading: status.isLoadingState,
+                titleController: wm.titleController,
+                onEditTap: wm.onEditTap,
+                onEditingDoneTap: wm.onEditingDoneTap,
+                onCancelTap: wm.onCancelTap,
+              ),
+            ),
           ),
           body: Column(
             children: [
@@ -89,7 +99,7 @@ class TaskScreen extends TaskWidget {
                           return TextButton(
                             onPressed: () {
                               wm.onDeleteTap();
-                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
                             },
                             child: const Text('Delete'),
                           );

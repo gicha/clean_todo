@@ -14,26 +14,32 @@ class TaskDependencies extends StatelessWidget {
     super.key,
     required this.task,
     required this.builder,
+    this.parentContext,
   });
 
+  final BuildContext? parentContext;
   final WidgetBuilder builder;
   final TaskEntity task;
 
   @override
   Widget build(BuildContext context) {
+    final diContext = parentContext ?? context;
+    final todoListBloc = diContext.read<TodoListBloc>();
+    final todoRepository = diContext.read<TodoRepository>();
     return Provider(
       create: (context) => TaskBloc(
         task: task,
-        todoRepository: context.read<TodoRepository>(),
+        todoRepository: todoRepository,
       ),
       builder: (context, _) => BlocListener<TaskBloc, BaseTaskState>(
         bloc: context.read<TaskBloc>(),
+        listenWhen: (previous, current) => current is DeletedTaskState || current is UpdatedTaskState,
         listener: (context, state) {
           if (state is DeletedTaskState) {
-            context.read<TodoListBloc>().add(TaskDeletedListEvent(state.task.id));
+            todoListBloc.add(TaskDeletedListEvent(state.task.id));
           }
           if (state is UpdatedTaskState) {
-            context.read<TodoListBloc>().add(TaskUpdatedListEvent(state.task));
+            todoListBloc.add(TaskUpdatedListEvent(state.task));
           }
         },
         child: builder(context),

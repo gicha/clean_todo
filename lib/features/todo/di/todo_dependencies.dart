@@ -41,6 +41,7 @@ class TodoDependenciesWidget extends StatelessWidget {
       ],
       builder: (context, child) => BlocListener<TaskCreatingBloc, BaseTaskCreatingState>(
         bloc: context.read<TaskCreatingBloc>(),
+        listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
           if (state is CreatedTaskState) {
             context.read<TodoListBloc>().add(TaskCreatedListEvent(state.task));

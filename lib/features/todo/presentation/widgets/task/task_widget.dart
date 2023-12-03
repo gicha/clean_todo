@@ -4,4 +4,6 @@ import 'task_widget_model.dart';
 
 abstract class TaskWidget extends ElementaryWidget<TaskWidgetModel> {
   TaskWidget({super.key}) : super(getTaskWidgetModelFactory());
+
+  bool get needPopWhenDelete => false;
 }

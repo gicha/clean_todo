@@ -13,9 +13,11 @@ class TaskCard extends StatelessWidget {
   final TaskEntity task;
 
   void onCardTap(BuildContext context) {
+    final diContext = context;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TaskDependencies(
+          parentContext: diContext,
           task: task,
           builder: (context) => TaskScreen(),
         ),

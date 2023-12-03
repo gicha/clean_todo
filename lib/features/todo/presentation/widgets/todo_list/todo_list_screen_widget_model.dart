@@ -90,10 +90,7 @@ class TodoListScreenWidgetModel extends WidgetModel<TodoListScreen, TodoListScre
 
   @override
   Future<void> onAddTaskTap() async {
-    final createTaskDTO = await showDialog<CreateTaskDTO>(
-      context: context,
-      builder: (context) => const CreateTaskDialog(),
-    );
+    final createTaskDTO = await CreateTaskDialog.show(context);
     if (createTaskDTO != null) {
       model.addTask(
         title: createTaskDTO.title,

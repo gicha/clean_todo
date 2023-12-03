@@ -49,6 +49,7 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   final _descriptionController = TextEditingController();
 
   StreamSubscription<BaseTaskState>? _todoListSubscription;
+  TaskEntity? _cachedTask;
 
   @override
   ValueListenable<EntityState<TaskEditingStatus>> get taskEditingStatusListenable => _taskEditingStatus;
@@ -81,6 +82,7 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   }
 
   void onTodoListState(BaseTaskState state) {
+    _cachedTask = state.task;
     if (state is IEditingTaskAvailable) {
       _taskEditingStatus.content(TaskEditingStatus.none);
     }
@@ -111,6 +113,9 @@ class TaskWidgetModel extends WidgetModel<TaskWidget, TaskModel> implements ITas
   @override
   void onCancelTap() {
     _taskEditingStatus.content(TaskEditingStatus.none);
+    if (_cachedTask != null) {
+      updateControllersByTask(_cachedTask!);
+    }
   }
 
   @override

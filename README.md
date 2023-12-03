@@ -136,3 +136,9 @@ Task creating | Task view | Task editing
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](readme_images/screenshots/create_task.png)  |  ![](readme_images/screenshots/task.png)  |  ![](readme_images/screenshots/task_editing.png)
 
+## What could be improved?
+- Add detailed documentation
+- Write tests
+- Make error handling to send to a service like Crashlytics or Sentry in the future. Ideally, make classes for errors and separate them by type to filter them and depending on the type send or not send them to the Crashlytics service
+- Add routing like GoRouter or AutoRouter
+- Add localization

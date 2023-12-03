@@ -2,7 +2,6 @@ import '../../domain/dto/create_task_dto.dart';
 import '../../domain/dto/update_task_dto.dart';
 import '../../domain/entity/task_entity.dart';
 import '../../domain/repository/todo_repository.dart';
-import '../extensions/task_extension.dart';
 import '../source/local/todo_lds.dart';
 
 class TodoRepositoryImpl extends TodoRepository {

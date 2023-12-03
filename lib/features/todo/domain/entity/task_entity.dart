@@ -8,6 +8,15 @@ typedef Id = int;
 enum TaskStatus {
   active,
   completed;
+
+  String get title {
+    switch (this) {
+      case TaskStatus.active:
+        return 'Active';
+      case TaskStatus.completed:
+        return 'Completed';
+    }
+  }
 }
 
 @MappableClass()

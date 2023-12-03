@@ -1,6 +1,8 @@
 import '../../../dto/task_dto.dart';
 import '../todo_lds.dart';
 
+const _delayDuration = Duration(milliseconds: 400);
+
 class MockTodoLDS extends TodoLDS {
   List<TaskDTO> _todo = <TaskDTO>[
     TaskDTO(
@@ -34,32 +36,32 @@ class MockTodoLDS extends TodoLDS {
       description: description,
       active: true,
     );
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(_delayDuration);
     _todo.add(newTask);
     return newTask;
   }
 
   @override
   Future<void> deleteTask(int id) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(_delayDuration);
     _todo.removeWhere((task) => task.id == id);
   }
 
   @override
   Future<TaskDTO> getTaskById(int id) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(_delayDuration);
     return _todo.firstWhere((task) => task.id == id);
   }
 
   @override
   Future<List<TaskDTO>> getTasks() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(_delayDuration);
     return _todo;
   }
 
   @override
   Future<TaskDTO> updateTask(TaskDTO taskDTO) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(_delayDuration);
     TaskDTO? updatedTask;
     _todo = _todo.map((t) {
       if (t.id == taskDTO.id) {

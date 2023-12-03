@@ -29,7 +29,7 @@ class TodoListScreen extends ElementaryWidget<TodoListScreenWidgetModel> {
           tabs: [
             for (final status in TaskStatus.values)
               Tab(
-                text: status.name,
+                text: status.title,
               ),
           ],
         ),

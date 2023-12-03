@@ -31,6 +31,7 @@ class TaskAppbar extends StatelessWidget {
           autofocus: true,
           decoration: const InputDecoration(
             hintText: 'Title',
+            border: InputBorder.none,
           ),
         ),
       ),

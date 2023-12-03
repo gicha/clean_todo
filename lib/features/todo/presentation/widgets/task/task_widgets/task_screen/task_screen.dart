@@ -38,18 +38,23 @@ class TaskScreen extends TaskWidget {
               Expanded(
                 child: ValueListenableBuilder(
                   valueListenable: wm.taskEditingStatusListenable,
-                  builder: (context, status, _) => TextField(
-                    controller: wm.descriptionController,
-                    enabled: status.data == TaskEditingStatus.editing,
-                    style: Theme.of(context).textTheme.displayMedium,
-                    maxLines: null,
-                    textInputAction: TextInputAction.newline,
-                    decoration: const InputDecoration(
-                      hintText: 'Description',
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(24),
-                    ),
-                  ),
+                  builder: (context, status, _) {
+                    final enabled = status.data == TaskEditingStatus.editing;
+                    final textColor = enabled ? null : Theme.of(context).disabledColor;
+                    final textTheme = Theme.of(context).textTheme.displayMedium?.copyWith(color: textColor);
+                    return TextField(
+                      controller: wm.descriptionController,
+                      enabled: enabled,
+                      style: textTheme,
+                      maxLines: null,
+                      textInputAction: TextInputAction.newline,
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(24),
+                      ),
+                    );
+                  },
                 ),
               ),
               Row(
@@ -97,10 +102,7 @@ class TaskScreen extends TaskWidget {
                           );
                         } else {
                           return TextButton(
-                            onPressed: () {
-                              wm.onDeleteTap();
-                              // Navigator.of(context).pop();
-                            },
+                            onPressed: wm.onDeleteTap,
                             child: const Text('Delete'),
                           );
                         }

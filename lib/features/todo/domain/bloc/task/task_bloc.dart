@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 
 import '../../entity/task_entity.dart';
 import '../../repository/todo_repository.dart';
-import '../todo_list/todo_list_bloc.dart';
 import 'task_event.dart';
 import 'task_state.dart';
 
@@ -12,11 +11,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   TaskBloc({
     required TaskEntity task,
     required TodoRepository todoRepository,
-    TaskDeleteCallback? onTaskDelete,
-    TaskActionCallback? onTaskUpdate,
   })  : _todoRepository = todoRepository,
-        _onTaskDelete = onTaskDelete,
-        _onTaskUpdate = onTaskUpdate,
         super(ContentTaskState(task)) {
     on<UpdateTaskTaskEvent>(_updateTask);
     on<CompleteTaskTaskEvent>(_completeTask);
@@ -25,8 +20,6 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
   }
 
   final TodoRepository _todoRepository;
-  final TaskDeleteCallback? _onTaskDelete;
-  final TaskActionCallback? _onTaskUpdate;
 
   FutureOr<void> _updateTask(
     UpdateTaskTaskEvent event,
@@ -37,8 +30,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     emit(UpdateLoadingTaskState(savedTask));
     try {
       final updatedTask = await _todoRepository.updateTask(event.updateTaskDTO);
-      _onTaskUpdate?.call(updatedTask);
-      emit(ContentTaskState(updatedTask));
+      emit(UpdatedTaskState(updatedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
     }
@@ -53,7 +45,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     emit(DeletingLoadingTaskState(savedTask));
     try {
       await _todoRepository.deleteTask(event.taskId);
-      _onTaskDelete?.call(event.taskId);
+      emit(DeletedTaskState(savedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
     }
@@ -69,8 +61,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     try {
       await _todoRepository.completeTask(event.taskId);
       final completedTask = savedTask.copyWith(status: TaskStatus.completed);
-      _onTaskUpdate?.call(completedTask);
-      emit(ContentTaskState(completedTask));
+      emit(UpdatedTaskState(completedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
     }
@@ -86,8 +77,7 @@ class TaskBloc extends Bloc<BaseTaskEvent, BaseTaskState> {
     try {
       await _todoRepository.revertTask(event.taskId);
       final revertedTask = savedTask.copyWith(status: TaskStatus.active);
-      _onTaskUpdate?.call(revertedTask);
-      emit(ContentTaskState(revertedTask));
+      emit(UpdatedTaskState(revertedTask));
     } on Exception catch (e) {
       emit(ErrorTaskState(savedTask, e));
     }

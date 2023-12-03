@@ -31,6 +31,14 @@ class ContentTaskState extends BaseTaskState implements IEditingTaskAvailable, I
   const ContentTaskState(super.task);
 }
 
+class DeletedTaskState extends ContentTaskState {
+  const DeletedTaskState(super.task);
+}
+
+class UpdatedTaskState extends ContentTaskState {
+  const UpdatedTaskState(super.task);
+}
+
 class ErrorTaskState extends ContentTaskState {
   const ErrorTaskState(super.task, this.error);
 

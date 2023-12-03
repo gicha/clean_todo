@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/features/todo/domain/bloc/task_creating/task_creating_state.dart';
 
 import '../data/repository/todo_impl.dart';
 import '../data/source/local/impl/mock_todo_lds.dart';
@@ -27,23 +29,25 @@ class TodoDependenciesWidget extends StatelessWidget {
           },
         ),
         Provider(
-          create: (context) {
-            final todoRepository = context.read<TodoRepository>();
-            return TodoListBloc(todoRepository: todoRepository);
-          },
+          create: (context) => TodoListBloc(
+            todoRepository: context.read<TodoRepository>(),
+          ),
         ),
         Provider(
-          create: (context) {
-            final todoRepository = context.read<TodoRepository>();
-            final todoListBloc = context.read<TodoListBloc>();
-            return TaskCreatingBloc(
-              todoRepository: todoRepository,
-              onTaskCreated: (task) => todoListBloc.add(TaskCreatedListEvent(task)),
-            );
-          },
+          create: (context) => TaskCreatingBloc(
+            todoRepository: context.read<TodoRepository>(),
+          ),
         ),
       ],
-      builder: (context, child) => builder(context),
+      builder: (context, child) => BlocListener<TaskCreatingBloc, BaseTaskCreatingState>(
+        bloc: context.read<TaskCreatingBloc>(),
+        listener: (context, state) {
+          if (state is CreatedTaskState) {
+            context.read<TodoListBloc>().add(TaskCreatedListEvent(state.task));
+          }
+        },
+        child: builder(context),
+      ),
     );
   }
 }

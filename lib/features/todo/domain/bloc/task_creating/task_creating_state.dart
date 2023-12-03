@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:todo/features/todo/domain/entity/task_entity.dart';
 
 import '../../dto/create_task_dto.dart';
 
@@ -22,6 +23,15 @@ class CreatingTaskState extends BaseTaskCreatingState {
 
   @override
   List<Object> get props => [createTaskDTO];
+}
+
+class CreatedTaskState extends ReadyToCreateTaskState {
+  const CreatedTaskState(this.task);
+
+  final TaskEntity task;
+
+  @override
+  List<Object> get props => [task];
 }
 
 class ErrorTaskCreatingState extends CreatingTaskState implements ITaskCreatingAvailable {

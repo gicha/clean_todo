@@ -1,12 +1,8 @@
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../../domain/bloc/task/task_bloc.dart';
-import '../../../../../domain/bloc/todo_list/todo_list_bloc.dart';
-import '../../../../../domain/bloc/todo_list/todo_list_event.dart';
+import '../../../../../di/task_dependencies.dart';
 import '../../../../../domain/entity/task_entity.dart';
-import '../../../../../domain/repository/todo_repository.dart';
 import '../../task_widget.dart';
 import '../../task_widget_model.dart';
 import '../task_screen/task_screen.dart';
@@ -17,18 +13,11 @@ class TaskCard extends StatelessWidget {
   final TaskEntity task;
 
   void onCardTap(BuildContext context) {
-    final todoListBloc = context.read<TodoListBloc>();
-    final taskBloc = TaskBloc(
-      task: task,
-      todoRepository: context.read<TodoRepository>(),
-      onTaskDelete: (task) => todoListBloc.add(TaskDeletedListEvent(task)),
-      onTaskUpdate: (task) => todoListBloc.add(TaskUpdatedListEvent(task)),
-    );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => Provider(
-          create: (context) => taskBloc,
-          builder: (context, _) => TaskScreen(),
+        builder: (context) => TaskDependencies(
+          task: task,
+          builder: (context) => TaskScreen(),
         ),
       ),
     );
@@ -36,16 +25,10 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todoListBloc = context.read<TodoListBloc>();
-    return Provider(
+    return TaskDependencies(
       key: ValueKey(task),
-      create: (context) => TaskBloc(
-        task: task,
-        todoRepository: context.read<TodoRepository>(),
-        onTaskDelete: (task) => todoListBloc.add(TaskDeletedListEvent(task)),
-        onTaskUpdate: (task) => todoListBloc.add(TaskUpdatedListEvent(task)),
-      ),
-      builder: (context, _) => _TaskCard(
+      task: task,
+      builder: (context) => _TaskCard(
         onCardTap: () => onCardTap(context),
       ),
     );

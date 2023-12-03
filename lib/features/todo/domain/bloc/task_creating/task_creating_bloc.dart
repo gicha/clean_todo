@@ -12,15 +12,12 @@ typedef TaskCreatedCallback = void Function(TaskEntity newTask);
 class TaskCreatingBloc extends Bloc<BaseTaskCreatingEvent, BaseTaskCreatingState> {
   TaskCreatingBloc({
     required TodoRepository todoRepository,
-    TaskCreatedCallback? onTaskCreated,
   })  : _todoRepository = todoRepository,
-        _onTaskCreated = onTaskCreated,
         super(const ReadyToCreateTaskState()) {
     on<CreateTaskEvent>(_createTask);
   }
 
   final TodoRepository _todoRepository;
-  final TaskCreatedCallback? _onTaskCreated;
 
   FutureOr<void> _createTask(
     CreateTaskEvent event,
@@ -30,8 +27,7 @@ class TaskCreatingBloc extends Bloc<BaseTaskCreatingEvent, BaseTaskCreatingState
     emit(CreatingTaskState(event.createTaskDTO));
     try {
       final newTask = await _todoRepository.addTask(event.createTaskDTO);
-      _onTaskCreated?.call(newTask);
-      emit(const ReadyToCreateTaskState());
+      emit(CreatedTaskState(newTask));
     } on Exception catch (e) {
       emit(ErrorTaskCreatingState(event.createTaskDTO, e));
     }

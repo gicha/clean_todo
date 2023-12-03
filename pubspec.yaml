@@ -1,5 +1,5 @@
 name: todo
-description: A new Flutter project.
+description: Todo application using a clean architecture
 publish_to: "none"
 
 # major.minor.patch+YYYYMMDDNN (NN - build number. flush every day)
